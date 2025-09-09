@@ -122,14 +122,19 @@ class SingleBrowserManager:
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--window-size=1920,1080')
         chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
-        
+
+        # Explicit paths for your VPS
+        chrome_options.binary_location = "/usr/bin/google-chrome"
+        service = Service("/usr/bin/chromedriver")
+
         try:
-            self.driver = webdriver.Chrome(options=chrome_options)
+            self.driver = webdriver.Chrome(service=service, options=chrome_options)
             logger.info("Chrome WebDriver initialized successfully")
             return True
         except Exception as e:
             logger.error(f"Failed to initialize WebDriver: {e}")
             return False
+
     
     def restart_driver(self):
         """Restart the WebDriver if needed"""
